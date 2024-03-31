@@ -551,12 +551,12 @@ footer {
 	font-style: italic;
 }
 
-h1.md-end-block.md-heading.md-focus:after,
-h2.md-end-block.md-heading.md-focus:after,
-h3.md-end-block.md-heading.md-focus:after,
-h4.md-end-block.md-heading.md-focus:after,
-h5.md-end-block.md-heading.md-focus:after,
-h6.md-end-block.md-heading.md-focus:after {
+h1.md-end-block.md-heading:after,
+h2.md-end-block.md-heading:after,
+h3.md-end-block.md-heading:after,
+h4.md-end-block.md-heading:after,
+h5.md-end-block.md-heading:after,
+h6.md-end-block.md-heading:after {
 	color: #bfbfbf !important;
 	border: 1px solid;
 	border-radius: 4px;
@@ -569,34 +569,44 @@ h6.md-end-block.md-heading.md-focus:after {
 	vertical-align: bottom;
 	font-weight: 400;
 	line-height: normal;
+	opacity: 0;
 }
 
-h1.md-end-block.md-heading.md-focus:after {
+h1.md-end-block.md-heading:hover:after,
+h2.md-end-block.md-heading:hover:after,
+h3.md-end-block.md-heading:hover:after,
+h4.md-end-block.md-heading:hover:after,
+h5.md-end-block.md-heading:hover:after,
+h6.md-end-block.md-heading:hover:after {
+	opacity: 1;
+}
+
+h1.md-end-block.md-heading:hover:after {
 	content: "h1";
 	top: 1.1rem;
 }
 
-h2.md-end-block.md-heading.md-focus:after {
+h2.md-end-block.md-heading:hover:after {
 	content: "h2";
 	top: 0.63rem;
 }
 
-h3.md-end-block.md-heading.md-focus:after {
+h3.md-end-block.md-heading:hover:after {
 	content: "h3";
 	top: 0.55rem;
 }
 
-h4.md-end-block.md-heading.md-focus:after {
+h4.md-end-block.md-heading:hover:after {
 	content: "h4";
 	top: 0.3rem;
 }
 
-h5.md-end-block.md-heading.md-focus:after {
+h5.md-end-block.md-heading:hover:after {
 	content: "h5";
 	top: 0.18rem;
 }
 
-h6.md-end-block.md-heading.md-focus:after {
+h6.md-end-block.md-heading:hover:after {
 	content: "h6";
 	top: 0.16rem;
 }
