@@ -4,15 +4,15 @@
 }
 
 @font-face {
-	font-family: "JetBrains Mono";
-	src: url("./JetBrainsMono-Medium.woff2") format("woff2");
+	font-family: "Cascadia Code";
+	src: url("./CascadiaCode.woff2") format("woff2");
 }
 
 :root {
 	--side-bar-bg-color: #fff;
 	--control-text-color: #777;
 	--font-sans-serif: "PingFang SC" !important;
-	--font-monospace: "JetBrains Mono" !important;
+	--font-monospace: "Cascadia Code" !important;
 }
 
 body {
@@ -63,6 +63,7 @@ body {
 #write p {
 	line-height: 1.6rem;
 	word-spacing: 0.05rem;
+	font-family: 'Cascadia Code','PingFang SC';
 }
 
 #write ol li {
@@ -95,6 +96,7 @@ h6 {
 	line-height: 1.4;
 	cursor: text;
 	color: #32325d;
+	font-family: 'Cascadia Code',"PingFang SC";
 	transition: all 0.2s ease-out;
 }
 
@@ -366,6 +368,7 @@ table tr td:last-child {
 	font-size: 0.85rem;
 	word-wrap: normal;
 	border-radius: 8px;
+	font-family: 'Cascadia Code',"PingFang SC";
 	box-shadow: rgb(149 149 149 / 13%) 0px 5px 10px;
 }
 
@@ -381,7 +384,8 @@ tt {
 	font-size: 0.92rem;
 	color: #e96900;
 	background-color: #f8f8f8;
-	border: 1px solid #2196f31f;
+	font-family: 'Cascadia Code', "PingFang SC";
+	border: 1px solid #e9690017;
 	border-radius: 4px;
 	padding: 2px 4 px;
 }
@@ -549,6 +553,7 @@ footer {
 .cm-s-inner.cm-comment {
 	color: #57a64a;
 	font-style: italic;
+	/* font-family: 'PingFang'; */
 }
 
 h1.md-end-block.md-heading:after,
@@ -609,4 +614,8 @@ h5.md-end-block.md-heading:hover:after {
 h6.md-end-block.md-heading:hover:after {
 	content: "h6";
 	top: 0.16rem;
+}
+
+.outline-label {
+    font-family: 'Cascadia Code',"PingFang SC";
 }
