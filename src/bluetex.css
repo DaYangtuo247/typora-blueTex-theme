@@ -1,14 +1,14 @@
 @font-face {
     font-family: "PingFang SC";
-    src: url("./PingFangSC-Regular.woff2") format("woff2");
+    src: url("blueTex/PingFangSC-Regular.otf");
 }
 @font-face {
     font-family: "Cascadia Code";
-    src: url("./CascadiaCode.woff2") format("woff2");
+    src: url("blueTex/CascadiaCode.woff2");
 }
 @font-face {
     font-family: "Maple Mono NF CN";
-    src: url("./MapleMono-NF-CN-Regular.woff2") format("woff2");
+    src: url("blueTex/MapleMono-NF-CN-Regular.woff2");
 }
 
 :root {
@@ -576,7 +576,7 @@ h6.md-end-block.md-heading span.md-plain {
 }
 
 .CodeMirror.cm-s-inner {
-    font-family: var(--code-font) !important;
+    font-family: var(--code-font);
     padding: 0rem .4rem;
 }
 
@@ -683,4 +683,31 @@ h6.md-end-block.md-heading span.md-plain {
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary {
     background-color: #3071a9;
+}
+
+
+#write input[type=checkbox] {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #34495e;
+    border-radius: 4px;
+}
+
+input[type="checkbox"]:checked {
+    background: #2196F3;
+
+    &:before {
+        content: '\2714';
+        color: #ffffff;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 10px;
+        transform: translate(-50%, -50%);
+    }
+}
+
+input[type="checkbox"]:checked:hover {
+    background: #1d7eca;
 }
