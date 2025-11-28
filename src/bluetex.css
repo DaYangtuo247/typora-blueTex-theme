@@ -455,12 +455,12 @@ h6.md-end-block.md-heading:hover:after { content: "h6"; }
 
 .outline-label { font-family: 'Cascadia Code',"PingFang SC"; }
 
-h1.md-end-block.md-heading span.md-plain,
-h2.md-end-block.md-heading span.md-plain,
-h3.md-end-block.md-heading span.md-plain,
-h4.md-end-block.md-heading span.md-plain,
-h5.md-end-block.md-heading span.md-plain,
-h6.md-end-block.md-heading span.md-plain {
+h1.md-end-block.md-heading span:first-of-type,
+h2.md-end-block.md-heading span:first-of-type,
+h3.md-end-block.md-heading span:first-of-type,
+h4.md-end-block.md-heading span:first-of-type,
+h5.md-end-block.md-heading span:first-of-type,
+h6.md-end-block.md-heading span:first-of-type {
     margin-left: 15px;
     position: relative;
 }
