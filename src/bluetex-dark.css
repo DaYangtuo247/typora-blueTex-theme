@@ -1,0 +1,886 @@
+@font-face {
+    font-family: "PingFang SC";
+    src: url("blueTex/PingFangSC-Regular.otf");
+}
+@font-face {
+    font-family: "Cascadia Code";
+    src: url("blueTex/CascadiaCode.woff2");
+}
+@font-face {
+    font-family: "Maple Mono NF CN";
+    src: url("blueTex/MapleMono-NF-CN-Regular.woff2");
+}
+
+/* --- 2. 全局变量定义 (深度适配 Typora 系统 UI) --- */
+:root {
+    /* --- 核心背景与文字 --- */
+    --bg-color: #1e1e1e;                /* 全局背景：深灰 */
+    --text-color: #d4d4d4;              /* 全局文字：浅灰 */
+    --side-bar-bg-color: #252526;       /* 侧边栏背景 */
+    --control-text-color: #d4d4d4;      /* 控件文字 */
+    --control-text-hover-color: #fff;
+    
+    /* --- 窗口与面板边框 --- */
+    --window-border: 1px solid #454545;
+    --panel-border-color: #454545;      /* 面板分割线颜色 */
+    --table-border-color: #454545;      /* 表格边框颜色 */
+    
+    /* --- 侧边栏与列表状态 --- */
+    --active-file-bg-color: #37373d;       /* 侧边栏选中文件背景 */
+    --active-file-border-color: #2196f3;   /* 侧边栏选中左侧条 */
+    --active-file-text-color: #fff;        /* 侧边栏选中文字 */
+    
+    /* [关键] 列表/菜单/设置项悬停背景 */
+    --item-hover-bg-color: #094771;        
+    --item-hover-text-color: #fff;
+    
+    /* --- 搜索与输入框 --- */
+    --search-select-bg-color: #094771;     /* 搜索结果选中背景 */
+    --search-select-text-color: #fff;
+    --focus-ring-color: #2196f3;           /* 输入框聚焦时的蓝框 */
+    
+    /* --- 文本选中状态 --- */
+    --select-text-bg-color: rgba(33, 150, 243, 0.4); 
+    --select-text-font-color: #fff;
+    
+    /* --- 源代码与特殊面板 --- */
+    --rawblock-edit-panel-bd: #2d2d2d;     /* 公式/HTML块编辑面板背景 */
+    --color-popover-bg-color: #252526;     /* 颜色选择器背景 */
+    
+    /* --- Markdown 元素颜色 --- */
+    --md-char-color: #666;                 /* 标记符颜色 */
+    --heading-char-color: #666;            /* 标题 # 号颜色 */
+    --meta-content-color: #5b808d;         /* 元数据颜色 */
+    --blur-text-color: #777;               /* 失焦文字颜色 */
+    
+    /* --- 按钮与拖拽 --- */
+    --active-toggle-btn-color: #2196f3;    /* 切换按钮激活色 */
+    --drag-placeholder-color: #2196f3;     /* 拖拽占位符 */
+    --primary-btn-border-color: #2196f3;
+    --primary-btn-text-color: #fff;
+
+    /* --- BlueTex 主题特有变量 --- */
+    --primary-color: #2196f3;
+    --primary-hover: #64b5f6;
+    --code-bg: #2d2d2d;
+    --border-color: #454545;
+    
+    /* --- 字体设置 --- */
+    --font-sans-serif: "PingFang SC" !important;
+    --font-monospace: "Cascadia Code" !important;
+    --code-font: "Maple Mono NF CN" !important;
+    
+    /* --- Mermaid --- */
+    --mermaid-theme: dark;
+}
+
+html {
+    font-size: 16px;
+    background-color: var(--bg-color);
+}
+
+/* --- 3. Body 基础样式 --- */
+body {
+    font-family: var(--font-sans-serif);
+    color: #d4d4d4; 
+    background-color: var(--bg-color);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6rem;
+    margin: 0;
+    overflow-x: hidden;
+    letter-spacing: 0;
+}
+
+/* 选中文字颜色 */
+::selection {
+    background-color: var(--select-text-bg-color);
+    color: #fff;
+}
+
+/* --- 4. 链接样式 --- */
+#write a {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+    color: var(--primary-color);
+    padding: 0 2px;
+}
+#write a::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background-color: var(--primary-color);
+    transition: width 0.3s, transform 0.3s;
+    transform: translateX(-50%);
+}
+#write a:hover {
+    color: var(--primary-hover);
+}
+#write a:hover::before {
+    width: 100%;
+    background-color: var(--primary-hover);
+}
+
+/* --- 5. 布局容器 --- */
+#write {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 50px 100px;
+}
+#write p {
+    line-height: 1.6rem;
+    word-spacing: 0.05rem;
+    font-family: 'Cascadia Code','PingFang SC';
+}
+#write ol li {
+    padding-left: 0.5rem;
+}
+#write > ul:first-child,
+#write > ol:first-child {
+    margin-top: 30px;
+}
+
+body > *:first-child { margin-top: 0 !important; }
+body > *:last-child { margin-bottom: 0 !important; }
+
+/* --- 6. 标题样式 --- */
+h1, h2, h3, h4, h5, h6 {
+    position: relative;
+    margin: 1rem 0;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+    color: #ffffff; /* 标题亮白 */
+    font-family: 'Cascadia Code',"PingFang SC";
+    transition: all 0.2s;
+}
+
+/* [核心修复] 使用 inline-block 解决 PDF 蓝条错位 */
+#write h1:before,
+#write h2:before,
+#write h3:before,
+#write h4:before,
+#write h5:before,
+#write h6:before {
+    content: "";
+    display: inline-block; 
+    background: var(--primary-color);
+    border-radius: 3px;
+    
+    /* 尺寸设置 */
+    width: 6px;
+    height: 0.8em; /* 相对当前标题字号的高度 */
+    
+    /* 对齐修正 */
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-top: -0.15em; /* [关键修改] 从 -4px 改为 -0.15em，实现按比例对齐 */
+    
+    /* 清除绝对定位残留 */
+    position: static;
+    top: auto;
+    transform: none;
+    
+    /* 防止行高干扰 */
+    line-height: 1;
+}
+
+h3.md-focus:before, h4.md-focus:before, h5.md-focus:before, h6.md-focus:before {
+    float: unset;
+    font-size: unset;
+}
+
+#write h1:hover,
+#write h2:hover,
+#write h3:hover,
+#write h4:hover,
+#write h5:hover,
+#write h6:hover {
+    transform: translateX(10px);
+}
+#write h1:hover a.anchor,
+#write h2:hover a.anchor,
+#write h3:hover a.anchor,
+#write h4:hover a.anchor,
+#write h5:hover a.anchor,
+#write h6:hover a.anchor {
+    text-decoration: none;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code,
+h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+    font-size: inherit !important;
+}
+
+h2 a, h3 a { color: #d4d4d4; }
+
+h1 { font-size: 2.2rem; margin-top: 1.8rem; margin-bottom: 1.2rem; }
+h2 { font-size: 2rem; line-height: 1.225; margin-top: 1.6rem; margin-bottom: 1.2rem; }
+h3 { font-size: 1.8rem; line-height: 1.43; margin-top: 1.5rem; margin-bottom: 1.2rem; }
+h4 { font-size: 1.6rem; margin-top: 1.4rem; margin-bottom: 1.1rem; }
+h5, h6 { font-size: 1.4rem; margin-top: 1rem; margin-bottom: 1rem; }
+h6 { font-size: 1.2rem; }
+
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0; }
+li > ol, li > ul { margin: 0; }
+
+/* --- 7. 分割线 --- */
+hr {
+    padding: 0;
+    margin: 22px 0;
+    border-top: 5px dashed var(--border-color);
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+/* 顶部间距调整 */
+body > h2:first-child, body > h1:first-child, body > h1:first-child + h2,
+body > h3:first-child, body > h4:first-child, body > h5:first-child,
+body > h6:first-child, a:first-child h1, a:first-child h2,
+a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p { margin-top: 0; }
+li p.first { display: inline-block; }
+
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0; }
+ul:last-child, ol:last-child { margin-bottom: 0; }
+
+/* --- 8. 引用块 --- */
+blockquote {
+    padding: 0.8em 1.4rem;
+    margin: 1em 0;
+    font-weight: 400;
+    border-left: 4px solid var(--primary-color);
+    background-color: rgba(33, 150, 243, 0.15);
+    color: #b0c4de;
+    border-radius: 0 8px 8px 0;
+}
+
+/* --- 9. 表格样式 --- */
+table {
+    padding: 0;
+    word-break: initial;
+    border-collapse: collapse;
+}
+table tr {
+    border-top: 1px solid var(--table-border-color);
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+}
+table tr:nth-child(2n), thead {
+    background-color: #262626; /* 斑马纹深色 */
+}
+table tr th,
+table tr td {
+    border: 1px solid var(--table-border-color);
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+    color: var(--text-color);
+}
+table tr th {
+    font-weight: bold;
+    border-bottom: 0;
+    background-color: #333;
+    color: #fff;
+}
+table tr th:first-child, table tr td:first-child { margin-top: 0; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0; }
+
+#write strong { padding: 0 1px; color: #fff; }
+#write em { padding: 0 5px 0 2px; }
+#write table thead th { background-color: #333; }
+
+/* --- 10. 代码块输入框 (Code Tooltip) --- */
+.code-tooltip {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    background-color: #252526 !important;
+    border: 1px solid var(--border-color);
+    color: #ccc;
+}
+
+.md-fences .code-tooltip {
+    z-index: 50;
+    right: 0 !important;
+    bottom: -28px !important;
+    padding: 0;
+    border-radius: 5px;
+}
+
+.md-fences .code-tooltip input, .md-fences .code-tooltip span {
+    margin: 0;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: #383838;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+/* --- 11. 代码块 (Code Fences) --- */
+#write .md-fences {
+    border: 1px solid var(--border-color);
+    margin: 0.8rem 0 !important;
+    padding: 0.8rem 0 !important;
+    line-height: 1.43rem;
+    background-color: #2d2d2d !important;
+    border-radius: 8px;
+    font-family: 'Cascadia Code',"PingFang SC";
+    font-size: 0.85rem;
+    word-wrap: normal;
+    color: #d4d4d4;
+}
+
+pre.md-fences-advanced.md-focus .md-fences-adv-panel {
+    position: unset;
+}
+
+#write .CodeMirror-wrap .CodeMirror-code pre { padding-left: 12px; }
+
+/* --- 12. 行内代码 --- */
+#write code, tt {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Cascadia Code', "PingFang SC";
+    font-size: 0.92rem;
+    color: #ce9178;
+    background-color: #3e3e3e;
+    border: 1px solid #444;
+}
+tt { margin: 0 2px; }
+
+figure { border-radius: 8px; }
+
+#write .md-footnote {
+    background-color: #333;
+    color: var(--primary-color);
+}
+
+/* --- 13. 高亮与删除线 --- */
+#write mark {
+    background-color: #d19a66;
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: 0 2px;
+    color: #000;
+    font-weight: 500;
+}
+
+#write del {
+    padding: 1px 2px;
+    text-decoration-color: #ff5555;
+    color: #777;
+}
+
+/* --- 14. 复选框样式 (移植自亮色主题，适配暗色) --- */
+
+/* 1. 清除之前可能存在的 flex 布局干扰，保持默认流式布局 */
+.md-task-list-item {
+    display: list-item; /* 恢复默认 */
+    margin-left: 0;
+}
+.md-task-list-item > input { 
+    margin-left: -1.3em; /* 恢复亮色主题的默认偏移 */
+    margin-top: 0; 
+}
+
+/* 2. 复选框本体 (移植自亮色主题) */
+#write input[type=checkbox] {
+    appearance: none;
+    -webkit-appearance: none; /* 兼容 Typora 内核 */
+    width: 16px;  /* 保持与亮色一致的尺寸 */
+    height: 16px;
+    /* 暗色适配：边框改为浅灰，否则在黑底上看不见 */
+    border: 1px solid #888; 
+    border-radius: 4px;
+    background-color: transparent;
+    /* position: relative; */
+    top: 4px; /* 微调垂直对齐 */
+    cursor: pointer;
+}
+
+/* 3. 选中状态背景 */
+#write input[type="checkbox"]:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 4. 选中状态对勾 (核心逻辑：使用 transform 居中，与亮色主题一致) */
+#write input[type="checkbox"]:checked:before {
+    content: '\2714';
+    color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 10px;
+    display: block;
+    line-height: 1;
+    /* 关键：使用变换居中，这是亮色主题对其整齐的原因 */
+    transform: translate(-50%, -50%); 
+}
+
+/* 5. 悬停效果 */
+#write input[type="checkbox"]:checked:hover {
+    background-color: var(--primary-hover);
+}
+
+/* --- 15. 目录 (TOC) --- */
+.md-toc { margin-top: 28px; margin-left: 0px; margin-right: 0px; }
+.sidebar-tabs { border-bottom: none; }
+
+.md-toc-content { position: relative; }
+.md-toc-content .md-toc-item { position: relative; color: #d4d4d4; }
+
+.md-toc-content:before {
+    content: '';
+    position: absolute;
+    left: 0; top: 12px;
+    width: 1px; height: calc(100% - 20px);
+    border-left: 1px solid rgba(33, 150, 243, 0.4);
+}
+
+.md-toc-content .md-toc-h1::before { background: var(--primary-color); }
+.md-toc-content .md-toc-item:before {
+    content: '';
+    position: absolute;
+    top: 12px; left: -22px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+}
+.md-toc-item:hover {
+    background-color: #333;
+    border-radius: 4px;
+}
+
+#typora-quick-open {
+    border: 1px solid var(--border-color);
+    background-color: #252526;
+    color: #ccc;
+}
+#typora-quick-open-item {
+    background-color: #252526;
+    border-color: var(--border-color);
+}
+#typora-quick-open-item.active {
+    background-color: var(--item-hover-bg-color);
+    color: #fff;
+}
+#md-notification:before { top: 10px; }
+
+/* focus mode */
+.on-focus-mode blockquote { border-left-color: rgba(85,85,85,0.12); }
+
+header, .context-menu, .megamenu-content, footer {
+    font-family: var(--font-sans-serif);
+}
+
+/* [BUG修复] 右键菜单样式 (增加边框和背景) */
+.context-menu, .dropdown-menu {
+    background-color: #2d2d2d !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6) !important;
+    color: #ccc !important;
+}
+.context-menu .menu-item:hover, .dropdown-menu > li > a:hover,
+.menu-item.active {
+    background-color: var(--item-hover-bg-color) !important;
+    color: #fff !important;
+}
+.menu-style-btn {
+    background: transparent;
+    border: 1px solid #555;
+    color: #ccc;
+}
+.menu-style-btn:hover { background: #444; }
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state {
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang { color: #ce9178; }
+
+.pin-outline #outline-content .outline-active strong,
+.pin-outline .outline-active { color: var(--primary-color); }
+
+.code-tooltip {
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: #252526;
+}
+
+/* --- 16. H1-H6 悬停提示标签 --- */
+h1.md-end-block.md-heading:after,
+h2.md-end-block.md-heading:after,
+h3.md-end-block.md-heading:after,
+h4.md-end-block.md-heading:after,
+h5.md-end-block.md-heading:after,
+h6.md-end-block.md-heading:after {
+    color: #888 !important;
+    border: 1px solid #555;
+    border-radius: 4px;
+    position: absolute;
+    left: -2.5rem;
+    float: left;
+    top: 50%;
+    font-size: 14px;
+    transform: translateY(-50%);
+    padding: 1px 5px;
+    vertical-align: bottom;
+    font-weight: 400;
+    line-height: normal;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background-color: var(--bg-color);
+}
+h1.md-end-block.md-heading:hover:after,
+h2.md-end-block.md-heading:hover:after,
+h3.md-end-block.md-heading:hover:after,
+h4.md-end-block.md-heading:hover:after,
+h5.md-end-block.md-heading:hover:after,
+h6.md-end-block.md-heading:hover:after { opacity: 1; }
+
+h1.md-end-block.md-heading:hover:after { content: "h1"; }
+h2.md-end-block.md-heading:hover:after { content: "h2"; }
+h3.md-end-block.md-heading:hover:after { content: "h3"; }
+h4.md-end-block.md-heading:hover:after { content: "h4"; }
+h5.md-end-block.md-heading:hover:after { content: "h5"; }
+h6.md-end-block.md-heading:hover:after { content: "h6"; }
+
+.outline-label { font-family: 'Cascadia Code',"PingFang SC"; color: #ccc; }
+
+h1.md-end-block.md-heading span:first-of-type,
+h2.md-end-block.md-heading span:first-of-type,
+h3.md-end-block.md-heading span:first-of-type,
+h4.md-end-block.md-heading span:first-of-type,
+h5.md-end-block.md-heading span:first-of-type,
+h6.md-end-block.md-heading span:first-of-type {
+    margin-left: 15px;
+    position: relative;
+}
+
+/* --- 17. Admonition/Callout 适配 --- */
+.md-alert {
+    padding: 0.1em 1em;
+    border-radius: 0px 8px 8px 0px;
+    color: #ddd;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.md-alert.md-alert-note { background: rgba(33, 150, 243, 0.15); color: #64b5f6; }
+.md-alert.md-alert-tip { background: rgba(50, 200, 100, 0.15); color: #81c784; }
+.md-alert.md-alert-important { background: rgba(133, 102, 251, 0.15); color: #b39ddb; }
+.md-alert.md-alert-warning { background: rgba(216, 161, 50, 0.15); color: #ffd54f; }
+.md-alert.md-alert-caution { background: rgba(209, 47, 58, 0.15); color: #e57373; }
+
+.modal-content {
+    border-radius: 8px;
+    background-color: #2d2d2d;
+    color: #ccc;
+    border: 1px solid var(--border-color);
+}
+
+.md-notification button, .modal-dialog .btn, .modal-dialog button {
+    transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: 8px;
+    outline: none;
+    color: #ccc;
+    background-color: #383838;
+    border: 1px solid #555;
+}
+
+.md-notification button:not(.btn-primary):hover,
+.modal-dialog .btn:not(.btn-primary):hover,
+.modal-dialog button:not(.btn-primary):hover {
+    background: #444;
+}
+
+#about-content-license-button {
+    border: 1px solid #555;
+    background: #333;
+    outline: none;
+    color: #ccc;
+}
+
+#about-content-license-button:hover { background: #444; }
+
+.md-notification button:focus, .modal-dialog .btn:focus, .modal-dialog button:focus {
+    outline: none;
+}
+
+.outline-label:hover { text-decoration: none; }
+
+.md-hr:focus { outline: none; }
+
+.outline-item.outline-item-active {
+    background-color: rgba(33, 150, 243, 0.3);
+    border-radius: 8px;
+    color: #fff;
+}
+
+.outline-item.outline-item-active span::before { color: var(--primary-color); }
+
+.outline-item:hover {
+    margin-left: 0px;
+    margin-right: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-radius: 8px;
+    background-color: rgba(33, 150, 243, 0.15);
+    color: #fff;
+}
+
+.outline-content li, .outline-content ul { margin-top: 2px; }
+
+.typora-node #typora-sidebar {
+    background-color: var(--side-bar-bg-color);
+    border-right: 1px solid #111;
+}
+
+.md-empty .md-meta, .md-expand .md-content, .md-expand .md-meta, .md-expand.md-content, .md-expand.md-meta {
+    font-family: none;
+}
+
+#file-library-search-input {
+    border-radius: 6px;
+    background-color: #383838;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+#close-outline-filter-btn { position: relative; right: 0; }
+
+/* --- 19. 代码高亮配色 (VS Code Dark) --- */
+.CodeMirror.cm-s-inner {
+    font-family: var(--code-font);
+    padding: 0rem .4rem;
+    background-color: #2d2d2d;
+    color: #d4d4d4;
+}
+
+.cm-s-inner .cm-keyword { color: #569cd6 !important; }
+.cm-s-inner .cm-operator { color: #d4d4d4 !important; }
+.cm-s-inner .cm-variable,
+.cm-s-inner .cm-builtin,
+.cm-s-inner .cm-header,
+.cm-s-inner .cm-tag,
+.cm-s-inner .cm-property,
+.cm-s-inner .cm-quote { color: #9cdcfe !important; }
+
+.cm-s-inner .cm-variable-2 { color: #9cdcfe !important; }
+.cm-s-inner .cm-variable-3,
+.cm-s-inner .cm-type { color: #4ec9b0 !important; }
+
+.cm-s-inner .cm-atom { color: #ce9178 !important; }
+.cm-s-inner .cm-number { color: #b5cea8 !important; }
+
+.cm-s-inner .cm-def,
+.cm-s-inner .cm-qualifier { color: #dcdcaa !important; }
+
+.cm-s-inner .cm-string { color: #ce9178 !important; }
+.cm-s-inner .cm-string-2 { color: #ce9178 !important; }
+
+.cm-s-inner .cm-comment { color: #6a9955 !important; }
+
+.cm-s-inner .cm-meta { color: #d4d4d4 !important; }
+.cm-s-inner .cm-attribute { color: #9cdcfe !important; }
+
+.cm-s-inner .cm-error {
+    color: #f44336 !important;
+    background-color: transparent !important;
+}
+
+.cm-s-inner .CodeMirror-matchingbracket {
+    text-decoration: underline;
+    color: white !important;
+}
+
+.CodeMirror div.CodeMirror-cursor {
+    border-left: 1px solid #fff;
+    z-index: 3;
+}
+
+.cm-s-inner div.CodeMirror-selected { background: #264f78 !important; }
+.cm-s-inner.CodeMirror-focused div.CodeMirror-selected { background: #264f78 !important; }
+.cm-s-inner .CodeMirror-selected,
+.cm-s-inner .CodeMirror-selectedtext { background-color: #264f78 !important; }
+
+.cm-s-inner .CodeMirror-line::-moz-selection,
+.cm-s-inner .CodeMirror-line>span::-moz-selection,
+.cm-s-inner .CodeMirror-line>span>span::-moz-selection { background-color: #264f78; }
+
+.cm-s-inner .CodeMirror-line::selection,
+.cm-s-inner .CodeMirror-line>span::selection,
+.cm-s-inner .CodeMirror-line>span>span::selection { background-color: #264f78; }
+
+.md-rawblock .md-rawblock-tooltip {
+    inset: auto 0.3rem auto auto;
+    transform: translateY(-120%);
+    background: #333 !important;
+    color: #fff;
+}
+
+.btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary {
+    background-color: #1976d2;
+}
+
+/* --- 20. [BUG修复] 数学公式强制去除白底 --- */
+.md-math-block, 
+.md-rawblock,
+.md-rawblock-container {
+    color: #d4d4d4;
+    /* 背景已由 :root 变量 --rawblock-edit-panel-bd 控制 */
+}
+
+/* 强制覆盖 CodeMirror 内部背景 */
+.md-math-block .CodeMirror,
+.md-math-block .CodeMirror-scroll {
+    background-color: #2d2d2d !important;
+}
+/* 编辑公式时光标和文字颜色 */
+.md-math-block .CodeMirror-line { color: #d4d4d4 !important; }
+/* 公式聚焦时不使用白色，使用半透明黑 */
+.md-focus .md-math-block, .md-focus.md-math-block {
+    background-color: rgba(0,0,0,0.3) !important;
+    box-shadow: none !important;
+}
+/* MathJax 预览内容颜色 */
+.jax-element, g[data-mml-node="text"] { fill: #d4d4d4 !important; }
+/* 预览浮窗 */
+.md-math-preview {
+    background-color: #252526 !important;
+    border: 1px solid #454545 !important;
+    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* --- 21. Mermaid 图表暗黑适配 --- */
+g.node rect, g.node circle, g.node polygon {
+    fill: #2d2d2d !important;
+    stroke: var(--primary-color) !important;
+}
+g.node text { fill: #fff !important; }
+g.edgeLabel rect { fill: #2d2d2d !important; opacity: 0.8; }
+g.edgeLabel text { fill: #d4d4d4 !important; }
+.edgePath .path { stroke: #888 !important; }
+.arrowheadPath { fill: #888 !important; }
+
+
+/* --- 修复：公式/原始块编辑控制栏背景白底 --- */
+.md-rawblock-control:not(.md-rawblock-tooltip) {
+    background-color: #2d2d2d !important;
+}
+
+/* 修复控制栏内的输入框/按钮颜色 */
+.md-rawblock-control:not(.md-rawblock-tooltip) input {
+    background-color: #383838 !important;
+    color: #fff !important;
+    border: 1px solid #555 !important;
+}
+
+/* 修复控制栏内的按钮颜色 */
+.md-rawblock-control:not(.md-rawblock-tooltip) .md-rawblock-btn {
+    color: #ccc !important;
+}
+.md-rawblock-control:not(.md-rawblock-tooltip) .md-rawblock-btn:hover {
+    color: var(--primary-color) !important;
+}
+
+/* =========================================================
+   新增：全局 UI 强制覆盖 (修复设置面板白底、滚动条等)
+   ========================================================= */
+
+/* 1. 全局滚动条美化 (修复 Hover 时浅色背景 Bug) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+/* [关键修复] 覆盖原有的 :hover 浅色样式 */
+::-webkit-scrollbar:hover {
+    background-color: transparent !important;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #454545;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #666; 
+}
+::-webkit-scrollbar-track {
+    background-color: #1e1e1e;
+}
+::-webkit-scrollbar-corner {
+    background-color: #1e1e1e;
+}
+
+/* 2. 自动补全下拉菜单 (Auto Suggest) */
+.auto-suggest-container {
+    background-color: #252526 !important;
+    border: 1px solid #454545 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6) !important;
+    z-index: 99999 !important;
+}
+.auto-suggest-container li {
+    color: #ccc !important;
+    background-color: transparent !important;
+    border: none !important;
+}
+.auto-suggest-container li.active, .auto-suggest-container li:hover {
+    background-color: #094771 !important;
+    color: #ffffff !important;
+}
+
+/* 3. 统一覆盖所有输入框/按钮 (针对设置面板、插入链接等) */
+input[type="text"], input[type="search"], input[type="number"], 
+input[type="password"], textarea, select {
+    background-color: #383838 !important;
+    border: 1px solid #555 !important;
+    color: #eee !important;
+    box-shadow: none !important;
+}
+input:focus, textarea:focus, select:focus {
+    border-color: var(--primary-color) !important;
+}
+button, .btn {
+    background-color: #333 !important;
+    border: 1px solid #555 !important;
+    color: #ccc !important;
+}
+button:hover, .btn:hover {
+    background-color: #444 !important;
+    color: #fff !important;
+}
+
+/* 4. 设置面板深度适配 */
+.ty-preferences .window-content, 
+.ty-preferences .nav-group-item,
+#setting-window, .modal-content {
+    background-color: #1e1e1e !important;
+    color: #ccc !important;
+}
+
+/* [关键修复] 设置面板侧边栏选中项高亮 */
+.ty-preferences .nav-group-item.active {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+}
+
+
+.window-header button, .window-header button:hover {
+    border: 0;
+    background: transparent !important;
+    border: 0px !important;
+    cursor: pointer;
+    font-size: 24px;
+}
